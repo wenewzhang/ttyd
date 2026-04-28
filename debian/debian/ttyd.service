@@ -1,0 +1,12 @@
+[Unit]
+Description=ttyd - Share your terminal over the web
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ttyd -p 7681 -i 127.0.0.1 -W login
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

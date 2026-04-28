@@ -1,0 +1,12 @@
+Source: ttyd
+Section: net
+Priority: optional
+Maintainer: ttyd <ttyd@example.com>
+Build-Depends: debhelper-compat (= 13), cmake, libwebsockets-dev, libjson-c-dev, libuv1-dev, zlib1g-dev, libssl-dev
+Standards-Version: 4.6.0
+
+Package: ttyd
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Share your terminal over the web
+ ttyd is a simple command-line tool for sharing terminal over the web.
