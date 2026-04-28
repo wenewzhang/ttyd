@@ -80,8 +80,43 @@ cmake --build "${BUILD_DIR}" -j"$(nproc)"
 echo "==> Installing to temporary directory..."
 DESTDIR="${STAGING_DIR}" cmake --install "${BUILD_DIR}"
 
+# Install systemd service file
+mkdir -p "${STAGING_DIR}/lib/systemd/system"
+cp "${SCRIPT_DIR}/ttyd.service" "${STAGING_DIR}/lib/systemd/system/ttyd.service"
+
 # Create DEBIAN directory
 mkdir -p "${STAGING_DIR}/DEBIAN"
+
+# Create postinst script to enable service on install
+cat > "${STAGING_DIR}/DEBIAN/postinst" << 'POSTINST_EOF'
+#!/bin/bash
+set -e
+if [ "$1" = "configure" ] || [ "$1" = "install" ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || true
+    systemctl enable ttyd.service >/dev/null 2>&1 || true
+fi
+POSTINST_EOF
+chmod 755 "${STAGING_DIR}/DEBIAN/postinst"
+
+# Create prerm script to disable service on remove
+cat > "${STAGING_DIR}/DEBIAN/prerm" << 'PRERM_EOF'
+#!/bin/bash
+set -e
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+    systemctl disable ttyd.service >/dev/null 2>&1 || true
+fi
+PRERM_EOF
+chmod 755 "${STAGING_DIR}/DEBIAN/prerm"
+
+# Create postrm script to clean up on remove
+cat > "${STAGING_DIR}/DEBIAN/postrm" << 'POSTRM_EOF'
+#!/bin/bash
+set -e
+if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then
+    systemctl daemon-reload >/dev/null 2>&1 || true
+fi
+POSTRM_EOF
+chmod 755 "${STAGING_DIR}/DEBIAN/postrm"
 
 # Try to generate dependencies using dpkg-shlibdeps
 DEPENDS=""
