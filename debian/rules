@@ -10,4 +10,4 @@ override_dh_auto_configure:
 
 override_dh_auto_install:
 	dh_auto_install
-	install -D -m 644 debian/ttyd.service debian/ttyd/lib/systemd/system/ttyd.service
+	install -D -m 644 debian/ttyd.service debian/ttyd/usr/lib/systemd/system/ttyd.service

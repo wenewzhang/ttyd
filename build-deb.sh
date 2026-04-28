@@ -81,8 +81,8 @@ echo "==> Installing to temporary directory..."
 DESTDIR="${STAGING_DIR}" cmake --install "${BUILD_DIR}"
 
 # Install systemd service file
-mkdir -p "${STAGING_DIR}/lib/systemd/system"
-cp "${SCRIPT_DIR}/ttyd.service" "${STAGING_DIR}/lib/systemd/system/ttyd.service"
+mkdir -p "${STAGING_DIR}/usr/lib/systemd/system"
+cp "${SCRIPT_DIR}/ttyd.service" "${STAGING_DIR}/usr/lib/systemd/system/ttyd.service"
 
 # Create DEBIAN directory
 mkdir -p "${STAGING_DIR}/DEBIAN"
