@@ -2,5 +2,5 @@
 set -e
 if [ "$1" = "configure" ] || [ "$1" = "install" ]; then
     systemctl daemon-reload >/dev/null 2>&1 || true
-    systemctl enable ttyd.service >/dev/null 2>&1 || true
+##    systemctl enable ttyd.service >/dev/null 2>&1 || true
 fi
